@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Low&SmartZone Admin Panel</title>
+
+<style>
+body{font-family:Arial;background:#f4f6f8;padding:20px}
+h2{text-align:center}
+.box{background:#fff;padding:15px;border-radius:10px;margin-bottom:15px}
+input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc}
+button{width:100%;padding:12px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-size:16px}
+.list{background:#fff;padding:12px;border-radius:8px;margin-top:10px}
+.del{background:#ef4444;margin-top:6px}
+.small{font-size:13px;color:#555}
+</style>
+</head>
+
+<body>
+
+<h2>Low&SmartZone – Admin Panel</h2>
+
+<div class="box">
+  <p class="small">Add new product</p>
+  <input id="name" placeholder="Product Name">
+  <input id="price" placeholder="Price / Offer (e.g. Under ₹499)">
+  <select id="cat">
+    <option value="electronics">Electronics</option>
+    <option value="fashion">Fashion</option>
+    <option value="home">Home</option>
+  </select>
+  <input id="link" placeholder="Affiliate Link (https://)">
+  <button onclick="addProduct()">Add Product</button>
+</div>
+
+<div id="list"></div>
+
+<script>
+// 🔐 CHANGE PASSWORD HERE
+const ADMIN_PASSWORD = "Jaysingh@2929";   // 👈 apna password yahan likho
+
+let pass = prompt("Enter Admin Password");
+if(pass !== ADMIN_PASSWORD){
+  alert("Wrong Password");
+  window.location.href = "index.html";
+}
+
+// 📦 DATA STORE
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+function addProduct(){
+  if(!name.value || !price.value){
+    alert("Product name & price required");
+    return;
+  }
+  products.push({
+    name: name.value,
+    price: price.value,
+    cat: cat.value,
+    link: link.value
+  });
+  localStorage.setItem("products", JSON.stringify(products));
+  name.value = price.value = link.value = "";
+  showProducts();
+}
+
+function deleteProduct(i){
+  if(confirm("Delete this product?")){
+    products.splice(i,1);
+    localStorage.setItem("products", JSON.stringify(products));
+    showProducts();
+  }
+}
+
+function showProducts(){
+  list.innerHTML = "";
+  products.forEach((p,i)=>{
+    list.innerHTML += `
+      <div class="list">
+        <b>${p.name}</b><br>
+        <span class="small">${p.price} | ${p.cat}</span><br>
+        <button class="del" onclick="deleteProduct(${i})">Delete</button>
+      </div>`;
+  });
+}
+
+showProducts();
+</script>
+
+</body>
+</html>
+
