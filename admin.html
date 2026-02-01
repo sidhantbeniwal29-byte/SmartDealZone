@@ -49,20 +49,37 @@ if(pass !== ADMIN_PASSWORD){
 // 📦 DATA STORE
 let products = JSON.parse(localStorage.getItem("products")) || [];
 
+<script>
 function addProduct(){
-  if(!name.value || !price.value){
-    alert("Product name & price required");
+  const pname = document.getElementById("name").value.trim();
+  const pprice = document.getElementById("price").value.trim();
+  const pcat = document.getElementById("cat").value;
+  const plink = document.getElementById("link").value.trim();
+
+  if(pname === "" || pprice === ""){
+    alert("Please fill product name and price");
     return;
   }
+
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+
   products.push({
-    name: name.value,
-    price: price.value,
-    cat: cat.value,
-    link: link.value
+    name: pname,
+    price: pprice,
+    cat: pcat,
+    link: plink
   });
+
   localStorage.setItem("products", JSON.stringify(products));
-  name.value = price.value = link.value = "";
+
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("link").value = "";
+
   showProducts();
+}
+</script>
+
 }
 
 function deleteProduct(i){
